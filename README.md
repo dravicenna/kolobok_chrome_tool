@@ -9,4 +9,4 @@ A little extension for helping render the Speed and Stealth parameters of Kolobo
 3. Drop the unpacked folder inside the chrome window
 
 Also:
-[Follow next instruction]: https://www.thesslstore.com/blog/install-a-chrome-extension
+[More detailed instruction here](https://www.thesslstore.com/blog/install-a-chrome-extension)
