@@ -1,0 +1,27 @@
+{
+    "name": "Kolobok Tools",
+    "description": "A little extension for helping render the Speed and Stealth parameters of Kolobok right inside the Simplemarket",
+    "version": "0.1.1",
+    "manifest_version": 3,
+    "content_scripts": [
+        {
+          "matches": ["https://wax.simplemarket.io/*"],
+          "js": ["kolobok.js"]
+        }
+      ],
+    "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+        "16": "/images/16.png",
+        "32": "/images/32.png",
+        "48": "/images/48.png",
+        "128": "/images/128.png"
+    }
+    },
+    "icons": {
+        "16": "/images/16.png",
+        "32": "/images/32.png",
+        "48": "/images/48.png",
+        "128": "/images/128.png"
+    }
+  }
