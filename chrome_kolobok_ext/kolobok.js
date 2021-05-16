@@ -4,9 +4,6 @@
 
 // TODO use API to all coloboks here
 // https://wax.simplemarket.io/api/v2/market?skip=30&limit=30&&authors=ilovekolobok&categories=kolobok&asset.mdata.health.raw=100&sortOrder=1&isVerifiedOnly=true
-// POST requist to take all ids
-// https://wax.simplemarket.io/api/v1/items/assetids
-// {"assetids":["100000007880413","100000007740402"]}
 
 function calc(e) {
     // Calculate speed and stealth
@@ -27,7 +24,10 @@ function calc(e) {
     }
     return [stealth, speed.toString()]
 } 
+
+
 async function get_and_paste_info(card) {
+    // Get info about Kolobok and insert it into card
     try {
         var k_id = card.href.split('/').pop()
         var koloGenome = await callKolobok(k_id)
@@ -72,15 +72,15 @@ async function get_and_paste_info(card) {
     }
 }
 async function process_cards(){
+    // Loop to process each card
     var stealth_speed = ["", ""]
-    // var cards = document.getElementsByClassName("title-link ng-star-inserted")
-    var cards = document.getElementsByClassName("title-link")
+    var cards = document.getElementsByClassName("title-link") // "title-link ng-star-inserted"
 
     for (var i = 0, l = cards.length; i < l; i++) {
         if (cards[i].getElementsByTagName('p').length < 1 ) {
-            await get_and_paste_info(cards[i])
+            get_and_paste_info(cards[i]);
         }
-        await sleep(100)
+        await sleep(50)
     }
 }
 async function callKolobok(idkolobok) {
@@ -110,57 +110,36 @@ async function callKolobok(idkolobok) {
         .catch(err => {
             if (err === "server") return console.log(err)
         })
-}
+}   
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
   
-process_cards();
-var allBodyNode = document.body.getElementsByClassName('col-gap ng-star-inserted').item(0);
-// Options for the observer (which mutations to observe)
-var config = { attributes: true, childList: true, subtree: false };
-
+  
 // Callback function to execute when mutations are observed
-var callback = async function(mutationsList) {
+const UpdateCards = async function(mutationsList) {
     await sleep(500);
     await process_cards();
     // for(var mutation of mutationsList) {
-    //     if (mutation.type == 'childList') {
-    //         console.log('A child node has been added or removed.');
-    //     }
-    //     else if (mutation.type == 'attributes') {
-    //         console.log('The ' + mutation.attributeName + ' attribute was modified.');
-    //     }
-    // }
+        //     if (mutation.type == 'childList') {
+            //         console.log('A child node has been added or removed.');
+            //     }
+            //     else if (mutation.type == 'attributes') {
+//         console.log('The ' + mutation.attributeName + ' attribute was modified.');
+//     }
+// }
 };
+async function start() {
+    await sleep(500)
+    await process_cards();
+    var allBodyNode = document.body.getElementsByClassName('col-gap ng-star-inserted').item(0);
+    // Options for the observer (which mutations to observe)
+    var config = { attributes: true, childList: true, subtree: false };
+    // Create an observer instance linked to the callback function
+    var observer = new MutationObserver(UpdateCards);
+    // Start observing the target node for configured mutations
+    observer.observe(allBodyNode, config);
+}
 
-// Create an observer instance linked to the callback function
-var observer = new MutationObserver(callback);
-
-// Start observing the target node for configured mutations
-observer.observe(allBodyNode, config);
-
-// var intervalId = setInterval(process_cards, 5000);
-
-// new MutationObserver(function(mutations) {
-//     mutations.some(function(mutation) {
-//       if (mutation.type === 'attributes' && mutation.attributeName === 'src') {
-//         console.log(mutation);
-//         console.log('Old src: ', mutation.oldValue);
-//         console.log('New src: ', mutation.target.src);
-//         return true;
-//       }
-  
-//       return false;
-//     });
-//   }).observe(document.body, {
-//     attributes: true,
-//     attributeFilter: ['src'],
-//     attributeOldValue: true,
-//     characterData: false,
-//     characterDataOldValue: false,
-//     childList: false,
-//     subtree: true
-//   });
-
+start()
